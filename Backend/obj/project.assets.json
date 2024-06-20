@@ -482,19 +482,19 @@
     ]
   },
   "packageFolders": {
-    "/home/gantuangcoc98/.nuget/packages/": {}
+    "/home/user/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/gantuangcoc98/projects/ToDo/Backend/Backend.csproj",
+      "projectUniqueName": "/home/user/github/ToDo/Backend/Backend.csproj",
       "projectName": "Backend",
-      "projectPath": "/home/gantuangcoc98/projects/ToDo/Backend/Backend.csproj",
-      "packagesPath": "/home/gantuangcoc98/.nuget/packages/",
-      "outputPath": "/home/gantuangcoc98/projects/ToDo/Backend/obj/",
+      "projectPath": "/home/user/github/ToDo/Backend/Backend.csproj",
+      "packagesPath": "/home/user/.nuget/packages/",
+      "outputPath": "/home/user/github/ToDo/Backend/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "/home/gantuangcoc98/.nuget/NuGet/NuGet.Config"
+        "/home/user/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
@@ -551,7 +551,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/home/gantuangcoc98/dotnet/sdk/8.0.301/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/home/user/dotnet/sdk/8.0.302/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

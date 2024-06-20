@@ -42,6 +42,18 @@ app.MapPut("/todo", (ToDo toDo) =>
     return Results.Ok(_toDo);
 });
 
-app.MapDelete("/todo", (int id) => db.DeleteToDo(id));
+app.MapDelete("/todo", (int id) =>
+{
+    try
+    {
+        db.DeleteToDo(id);
+        return Results.Ok("Task deleted successfully.");
+    }
+    catch (ArgumentException ex)
+    {
+        return Results.NotFound(ex.Message);
+    }
+});
+
 
 app.Run();

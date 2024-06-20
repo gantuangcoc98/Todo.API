@@ -50,9 +50,14 @@ public class ToDoDB
          return _toDo;
      }
 
-     public void DeleteToDo(int id)
-     {
-        
-        ToDoList = ToDoList.FindAll(ToDo => ToDo.Id != id);
-     }
+   public void DeleteToDo(int id)
+   {
+      var todo = ToDoList.FirstOrDefault(todo => todo.Id == id);
+      if (todo == null)
+      {
+         throw new ArgumentException("Task not found.");
+      }
+      
+      ToDoList = ToDoList.FindAll(todo => todo.Id != id);
+   }
 }
