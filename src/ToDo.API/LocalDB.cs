@@ -1,4 +1,6 @@
 using System.Reflection.Metadata.Ecma335;
+using System.Linq;
+using System;
 
 namespace LocalDB;
 
@@ -20,13 +22,19 @@ public class ToDoDB
      {
          ArgumentException.ThrowIfNullOrEmpty(task);
 
+
+         ToDo LastIndex = ToDoList.LastOrDefault();
+
+
          int length = ToDoList.Count();
 
-         ToDo toDo = new() { Id = length + 1, Task = task };
+
+         ToDo toDo = new() { Id = (LastIndex == null)?1:LastIndex.Id + 1, Task = task };
          ToDoList.Add(toDo);
 
          return toDo;
      }
+
 
      public ToDo UpdateToDo(ToDo _toDo)
      {
