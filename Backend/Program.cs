@@ -1,29 +1,47 @@
-using Microsoft.OpenApi.Models;
 using LocalDB;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(c =>
-{
-    c.SwaggerDoc("v1", new OpenApiInfo { Title = "ToDo", Version = "v1", Description = "Your trusted to do list."});
-});
+builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI(c =>
-    {
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "ToDo v1");
-    });
+    app.UseSwaggerUI();
 }
 
-app.MapGet("/todolist", () => ToDoDB.GetToDoList());
-app.MapGet("/todo/{id}", (int id) => ToDoDB.GetToDo(id));
-app.MapPost("/todo", (ToDo toDo) => ToDoDB.CreateToDo(toDo));
-app.MapPut("/todo", (ToDo toDo) => ToDoDB.UpdateToDo(toDo));
-app.MapDelete("/todo", (int id) => ToDoDB.DeleteToDo(id));
+ToDoDB db = new();
+
+app.MapGet("/", () => "Hello World!");
+
+app.MapGet("/todolist", () => db.GetToDoList());
+
+app.MapGet("/todo/{id}", (int id) => db.GetToDo(id));
+
+app.MapPost("/todo", (string task) =>
+{
+    ToDo toDo = new();
+
+    try { toDo = db.CreateToDo(task); }
+    catch (ArgumentException) { return Results.BadRequest("Task should not be null or empty."); }
+
+    return Results.Ok(toDo);
+});
+
+app.MapPut("/todo", (ToDo toDo) => 
+{
+    ToDo _toDo = new();
+
+    try { _toDo = db.UpdateToDo(toDo); }
+    catch (ArgumentException) { return Results.BadRequest("Task should not be null or empty."); }
+    catch (KeyNotFoundException) { return Results.BadRequest("Task does not exist."); }
+
+    return Results.Ok(_toDo);
+});
+
+app.MapDelete("/todo", (int id) => db.DeleteToDo(id));
 
 app.Run();

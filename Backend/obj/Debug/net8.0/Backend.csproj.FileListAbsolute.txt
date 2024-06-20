@@ -30,3 +30,5 @@
 /home/gantuangcoc98/projects/ToDo/Backend/obj/Debug/net8.0/Backend.pdb
 /home/gantuangcoc98/projects/ToDo/Backend/obj/Debug/net8.0/Backend.genruntimeconfig.cache
 /home/gantuangcoc98/projects/ToDo/Backend/obj/Debug/net8.0/ref/Backend.dll
+/home/gantuangcoc98/projects/ToDo/Backend/obj/Debug/net8.0/Backend.sourcelink.json
+/home/gantuangcoc98/projects/ToDo/Backend/bin/Debug/net8.0/Microsoft.AspNetCore.OpenApi.dll

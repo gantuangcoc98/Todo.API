@@ -1,48 +1,58 @@
-namespace LocalDB;
+using System.Reflection.Metadata.Ecma335;
 
-public record ToDo
-{
-    public int Id { get; set; }
-    public string? Task { get; set; }
-}
+namespace LocalDB;
 
 public class ToDoDB 
 {
-     public static List<ToDo> ToDoList = new List<ToDo>();
+     private List<ToDo> ToDoList = new List<ToDo>();
 
-     public static List<ToDo> GetToDoList()
+     public List<ToDo> GetToDoList()
      {
         return ToDoList;
      }
 
-     public static ToDo? GetToDo(int Id)
+     public ToDo? GetToDo(int id)
      {
-        return ToDoList.SingleOrDefault(ToDo => ToDo.Id == Id);
+        return ToDoList.SingleOrDefault(ToDo => ToDo.Id == id);
+     }
+   
+     public ToDo CreateToDo(string task)
+     {
+         ArgumentException.ThrowIfNullOrEmpty(task);
+
+         int length = ToDoList.Count();
+
+         ToDo toDo = new() { Id = length + 1, Task = task };
+         ToDoList.Add(toDo);
+
+         return toDo;
      }
 
-     public static ToDo CreateToDo(ToDo toDo)
+     public ToDo UpdateToDo(ToDo _toDo)
      {
-        ToDoList.Add(toDo);
-        return toDo;
-     }
+         ArgumentException.ThrowIfNullOrEmpty(_toDo.Task);
 
-     public static ToDo UpdateToDo(ToDo toDo)
-     {
-        ToDoList = ToDoList.Select(ToDo =>
-        {
-            if (ToDo.Id == toDo.Id)
-            {
-                ToDo.Task = toDo.Task;
+         bool updated = false;
+
+         ToDoList = ToDoList.Select(ToDo =>
+         {
+            if (ToDo.Id == _toDo.Id)
+            { 
+               ToDo.Task = _toDo.Task; 
+               updated = true;
             }
 
             return ToDo;
-        }).ToList();
+         }).ToList();
 
-        return toDo;
+         if (!updated) { throw new KeyNotFoundException(); }
+
+         return _toDo;
      }
 
-     public static void DeleteToDo(int Id)
+     public void DeleteToDo(int id)
      {
-        ToDoList = ToDoList.FindAll(ToDo => ToDo.Id != Id);
+        
+        ToDoList = ToDoList.FindAll(ToDo => ToDo.Id != id);
      }
 }
