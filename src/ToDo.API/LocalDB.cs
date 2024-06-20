@@ -1,71 +1,63 @@
-using System.Reflection.Metadata.Ecma335;
-using System.Linq;
-using System;
-
 namespace LocalDB;
 
 public class ToDoDB 
 {
-     private List<ToDo> ToDoList = new List<ToDo>();
+   private Dictionary<int, ToDo> ToDoList = new();
 
-     public List<ToDo> GetToDoList()
-     {
-        return ToDoList;
-     }
+   public List<ToDo> GetToDoList() { return ToDoList.Values.ToList(); }
 
-     public ToDo? GetToDo(int id)
-     {
-        return ToDoList.SingleOrDefault(ToDo => ToDo.Id == id);
-     }
-   
-     public ToDo CreateToDo(string task)
-     {
-         ArgumentException.ThrowIfNullOrEmpty(task);
+   public ToDo GetToDo(int id) 
+   {
+      if (ToDoList.TryGetValue(id, out ToDo? toDo)) 
+      { 
+         return toDo; 
+      }
+      else 
+      { 
+         throw new KeyNotFoundException("ToDo item not found."); 
+      }
+   }
 
+   public ToDo CreateToDo(string task)
+   {
+      ArgumentException.ThrowIfNullOrEmpty(task);
 
-         ToDo LastIndex = ToDoList.LastOrDefault();
+      int newId;
 
+      if (ToDoList.Count > 0) 
+      { 
+         newId = ToDoList.Keys.Max() + 1; 
+      }
+      else 
+      { 
+         newId = 0; 
+      }
 
-         int length = ToDoList.Count();
+      ToDo toDo = new() { Id = newId, Task = task };
 
+      return ToDoList[toDo.Id] = toDo;
+   }
 
-         ToDo toDo = new() { Id = (LastIndex == null)?1:LastIndex.Id + 1, Task = task };
-         ToDoList.Add(toDo);
+   public ToDo UpdateToDo(ToDo toDo)
+   {
+      ArgumentException.ThrowIfNullOrEmpty(toDo.Task);
 
-         return toDo;
-     }
-
-
-     public ToDo UpdateToDo(ToDo _toDo)
-     {
-         ArgumentException.ThrowIfNullOrEmpty(_toDo.Task);
-
-         bool updated = false;
-
-         ToDoList = ToDoList.Select(ToDo =>
-         {
-            if (ToDo.Id == _toDo.Id)
-            { 
-               ToDo.Task = _toDo.Task; 
-               updated = true;
-            }
-
-            return ToDo;
-         }).ToList();
-
-         if (!updated) { throw new KeyNotFoundException(); }
-
-         return _toDo;
-     }
+      if (ToDoList.ContainsKey(toDo.Id)) 
+      { 
+         ToDoList[toDo.Id].Task = toDo.Task; 
+         return ToDoList[toDo.Id];
+      }
+      else 
+      { 
+         throw new KeyNotFoundException("Cannot update, ToDo item not found."); 
+      }
+   }
 
    public void DeleteToDo(int id)
    {
-      var todo = ToDoList.FirstOrDefault(todo => todo.Id == id);
-      if (todo == null)
-      {
-         throw new ArgumentException("Task not found.");
+      if (!ToDoList.Remove(id)) 
+      { 
+         throw new KeyNotFoundException("Cannot delete, ToDo item not found."); 
       }
-      
-      ToDoList = ToDoList.FindAll(todo => todo.Id != id);
    }
 }
