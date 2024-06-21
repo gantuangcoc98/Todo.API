@@ -1,6 +1,6 @@
-namespace LocalDB;
+namespace Todo.API.Models;
 
-public class ToDo
+public record ToDo
 {
     public int Id { get; set; }
     public string? Task { get; set; }
