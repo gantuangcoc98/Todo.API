@@ -1,19 +1,19 @@
 using Todo.API.DB;
 using Todo.API.Models;
-using Todo.API.DTO;
+using Todo.API.Models.DTO;
 
 namespace Todo.API.Services;
 
 public class TodoService(Database db)
 {
-    public IEnumerable<ToDo> GetToDoList() => db.ToDoList.Values;
+   public IEnumerable<ToDo> GetToDoList() => db.ToDoList.Values;
 
    public IResult GetToDo(int id) 
    {
       if (db.ToDoList.TryGetValue(id, out ToDo? toDo)) 
       { 
-         TodoDTO _todoDTO = new(toDo.Task);
-         return Results.Ok(_todoDTO);
+         TodoRequest todoRequest = new(toDo.Task);
+         return Results.Ok(todoRequest);
       }
       else { return Results.BadRequest("Todo item not found."); }
    }
@@ -31,9 +31,9 @@ public class TodoService(Database db)
       
       db.ToDoList[toDo.Id] = toDo;
 
-      TodoDTO todoDTO = new(toDo.Task);
+      TodoRequest todoRequest = new(toDo.Task);
 
-      return Results.Ok(todoDTO);
+      return Results.Ok(todoRequest);
    }
 
    public IResult UpdateToDo(ToDo toDo)
@@ -44,9 +44,9 @@ public class TodoService(Database db)
       { 
          db.ToDoList[toDo.Id].Task = toDo.Task; 
 
-         TodoDTO todoDTO = new(toDo.Task);
+         TodoRequest todoRequest = new(toDo.Task);
 
-         return Results.Ok(todoDTO);
+         return Results.Ok(todoRequest);
       }
       else { return Results.BadRequest("Cannot update, todo item not found."); }
    }

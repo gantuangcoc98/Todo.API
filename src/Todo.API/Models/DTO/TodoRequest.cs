@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace Todo.API.DTO;
+namespace Todo.API.Models.DTO;
 
 public record TodoRequest(
     [Required]
