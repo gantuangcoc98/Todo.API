@@ -6,6 +6,8 @@ using Todo.API.Models.Requests;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Configuration.AddUserSecrets<Program>();
+
 builder.Services.AddDbContext<TodoDbContext>(options =>
 { options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")); });
 
